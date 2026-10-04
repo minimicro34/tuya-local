@@ -104,7 +104,7 @@ class TuyaLocalEntity:
             value = a.get_value(self._device)
             if value is not None or not a.optional:
                 # Decode json attributes for user convenience
-                if a.rawtype == "json":
+                if a.rawtype == "json" and value is not None:
                     try:
                         value = json.loads(value)
                     except json.JSONDecodeError:

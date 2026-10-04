@@ -263,6 +263,26 @@ class TestProperties:
         assert "req_attr" in attrs
         assert attrs["req_attr"] is None
 
+    def test_extra_state_attributes_includes_none_required_json(
+        self, mock_device, mock_config
+    ):
+        dp = MagicMock()
+        dp.name = "req_json_attr"
+        dp.hidden = False
+        dp.optional = False
+        dp.rawtype = "json"
+        dp.get_value.return_value = None
+        mock_config.dps.return_value = [dp]
+
+        e = DummyEntity()
+        dps = e._init_begin(mock_device, mock_config)
+        e._init_end(dps)
+
+        attrs = e.extra_state_attributes
+
+        assert "req_json_attr" in attrs
+        assert attrs["req_json_attr"] is None
+
     def test_entity_registry_enabled_default(self, entity, mock_config):
         assert entity.entity_registry_enabled_default is True
         mock_config.enabled_by_default.return_value = False
